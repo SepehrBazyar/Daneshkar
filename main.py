@@ -2,15 +2,17 @@ class DiscountError(Exception):
     pass
 
 
-def integer_discount(function):
+def integer_discount(number: int = 60):
 
-    def wrapper(price: int, discount: int) -> int:
-        return function(price, discount / 60)
+    def inner_function(function):
+        def wrapper(price: int, discount: int) -> int:
+            return function(price, discount / number)
 
-    return wrapper
+        return wrapper
+    return inner_function
 
 
-@integer_discount
+@integer_discount(600)
 def apply_discount(price: int, discount: float = 0.0) -> int:
     """Calculates the Final Price After Discount"""
     final_price = int(price * (1 - discount))
